@@ -163,7 +163,6 @@ optgroup option {
   text-decoration: none;
   color: #888;   
   border-radius: 2px;
-  padding: 2px 4px; /* Tambahan padding agar latar hover abu-abunya rapi */
 }
 
 #details .sunting-linktambah:hover {
