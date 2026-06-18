@@ -147,15 +147,24 @@ function enableApp() {
 // to update the panel during app initialization.
 function processHashChange() {
   let fragment = window.location.hash.replace('#', '');
+
   if (fragment === 'about') {
     document.title = 'About – ' + BASE_TITLE;
     displayPanelContent('about');
   }
+  // --- TAMBAHKAN BLOK INI ---
+  else if (fragment === 'kontrib') {
+    // Jika fragment adalah 'kontrib', tampilkan panel Kontributor
+    document.title = 'Jadi Kontributor – ' + BASE_TITLE;
+    displayPanelContent('kontrib'); 
+  }
+  // --------------------------
   else {
     if (!BootstrapDataIsLoaded) {
       displayPanelContent('loading');
     }
     else {
+      // Logika untuk menangani Masjid (misal Q123...) atau kembali ke Index
       if (fragment === '' || !(fragment in Records)) {
         window.location.hash = '';  // Disable invalid fragments
         document.title = BASE_TITLE;
