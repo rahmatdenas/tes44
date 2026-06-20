@@ -686,7 +686,7 @@ function generateRecordDetails(qid) {
   let record = Records[qid];
   let titleHtml = `<h1>${record.title}</h1>`;
 
-  let figureHtml = generateFigure(record.imageFilename);
+let figureHtml = generateFigure(record.imageFilename, record.title);
 
   if (record.imageFilename) {
     figureHtml = figureHtml.replace('<figure class="', '<figure class="gambar-utama ');
