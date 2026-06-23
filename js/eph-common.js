@@ -164,49 +164,34 @@ function enableApp() {
 
 function processHashChange() {
   let fragment = window.location.hash.replace('#', '');
-  
-  // Tangkap elemen yang menentukan layout tata letak
-  let mapElem = document.getElementById('map');
-  let panelElem = document.getElementById('panel');
 
   if (fragment === 'landing') {
     document.title = 'Mulai Eksplorasi – ' + BASE_TITLE;
     displayPanelContent('landing');
     
-    // === KUNCI HILANGNYA PETA ===
-    if (mapElem) mapElem.style.display = 'none'; // Sembunyikan peta
-    if (panelElem) panelElem.style.flex = '1';   // Buat panel formulir memenuhi seluruh layar
+    // Perhatikan: Kode yang menyembunyikan peta dan melebarkan layar sudah saya hapus dari sini.
+  }
+  else if (fragment === 'about') {
+    document.title = 'About – ' + BASE_TITLE;
+    displayPanelContent('about');
+  }
+  else if (fragment === 'kontrib') {
+    document.title = 'Jadi Kontributor – ' + BASE_TITLE;
+    displayPanelContent('kontrib'); 
   }
   else {
-    // === KEMBALIKAN TATA LETAK SAAT TIDAK DI LANDING ===
-    if (mapElem) {
-      mapElem.style.display = 'block'; // Munculkan peta lagi
-      if (Map) Map.invalidateSize();   // Wajib: Perintahkan Leaflet menghitung ulang ukuran agar tidak rusak (glitch)
-    }
-    if (panelElem) panelElem.style.flex = '0 1 500px'; // Kembalikan ukuran panel ke 500px
-
-    if (fragment === 'about') {
-      document.title = 'About – ' + BASE_TITLE;
-      displayPanelContent('about');
-    }
-    else if (fragment === 'kontrib') {
-      document.title = 'Jadi Kontributor – ' + BASE_TITLE;
-      displayPanelContent('kontrib'); 
+    if (!BootstrapDataIsLoaded) {
+      displayPanelContent('loading');
     }
     else {
-      if (!BootstrapDataIsLoaded) {
-        displayPanelContent('loading');
+      if (fragment === '' || !(fragment in Records)) {
+        window.location.hash = '';  
+        document.title = BASE_TITLE;
+        displayPanelContent('index');
       }
       else {
-        if (fragment === '' || !(fragment in Records)) {
-          window.location.hash = '';  
-          document.title = BASE_TITLE;
-          displayPanelContent('index');
-        }
-        else {
-          activateMapMarker(fragment);
-          displayRecordDetails(fragment);
-        }
+        activateMapMarker(fragment);
+        displayRecordDetails(fragment);
       }
     }
   }
