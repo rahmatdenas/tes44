@@ -111,7 +111,7 @@ function tentukanKategoriKueri(inputTxt) {
   if (/\bQ7944\b/.test(teks)) return 'peristiwa'; // Gempa bumi
   
   // Kategori Alam (Semua ini akan mematikan fitur "Didirikan")
-  const kelompokAlam = [
+const kelompokAlam = [
     'Q34770', // Bahasa
     'Q19861951', 'Q746549', 'Q2095', 'Q8195619', // Hidangan
     'Q11460', 'Q3172759', 'Q28823', // Pakaian
@@ -126,7 +126,7 @@ function tentukanKategoriKueri(inputTxt) {
     'Q23442', // Pulau
     'Q34038', // Air terjun
     'Q23397', 'Q204324', 'Q159954', // Danau & kaldera
-    'Q193475', 'Q40080', 'Q570116', // Pantai & Objek Wisata
+    'Q40080', 'Q570116', // Pantai & Objek Wisata (Q193475 Dihapus dari sini)
     'Q131681', 'Q12323' // Waduk, bendungan, embung
   ];
   // Regex \b digunakan agar Q8502 tidak terpanggil di dalam teks Q850299 dll
@@ -168,9 +168,10 @@ function dapatkanNamaKlaster(inputTxt) {
   if (cek(['Q23442'])) return 'Pulau';
   if (cek(['Q34038'])) return 'Air terjun';
   if (cek(['Q23397', 'Q204324', 'Q159954'])) return 'Danau & kaldera';
-  if (cek(['Q40080', 'Q193475'])) return 'Pantai'; // Q193475 sering beririsan
+if (cek(['Q40080'])) return 'Pantai'; 
   if (cek(['Q570116'])) return 'Objek wisata';
   if (cek(['Q131681', 'Q12323'])) return 'Waduk, bendungan, & embung';
+  if (cek(['Q193475', 'Q101659'])) return 'Menhir & dolmen';
 
   // Klaster Bangunan & Fasilitas (Non-Alam Default)
   if (cek(['Q32815', 'Q56235676', 'Q56235673', 'Q1454820'])) return 'Masjid';
@@ -929,8 +930,10 @@ let isBersejarah = false;
   } else if (['Gempa bumi'].includes(currentNamaKlaster)) {
     prefixLokasi = 'Tempat kejadian/terdampak';
     prefixTahun = 'Pada';
+  } else if (['Menhir & dolmen'].includes(currentNamaKlaster)) {
+    prefixLokasi = 'Terletak di';
+    prefixTahun = 'Peninggalan';
   }
-
   // 2. Kategori Alam (Mematikan Tahun & Modifikasi Terletak)
   if (currentKategoriUtama === 'alam') {
     showTahun = false;
