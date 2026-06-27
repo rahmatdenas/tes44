@@ -3,14 +3,14 @@
 const BASE_TITLE = 'WikiSurau';
 
 const KUMPULAN_KUERI_0 = {
-  'general': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
+  'universal': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
   WHERE {
     VALUES ?jenis { <PLACEHOLDER_JENIS> } 
     {
       <PLACEHOLDER_WILAYAH_1>
       ?site wdt:P31 ?jenis ;
-            wdt:P131 ?p131Lokasi .
-      ?p131Lokasi wdt:P131* ?provinsi .
+            wdt:<PLACEHOLDER_PROP_LOKASI> ?p131Lokasi .
+      <PLACEHOLDER_HIERARKI_LOKASI>
     }
     
     <PLACEHOLDER_UNION_EKSTRA>
@@ -26,221 +26,18 @@ const KUMPULAN_KUERI_0 = {
     BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
     
     SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-  }`,
-
-  'pers': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-  WHERE {
-    VALUES ?jenis {<PLACEHOLDER_JENIS> } 
-    {
-      <PLACEHOLDER_WILAYAH_1>
-      ?site wdt:P31 ?jenis ;
-            wdt:P159  ?p131Lokasi .
-      ?p131Lokasi wdt:P131* ?provinsi .
-    }
-    
-    <PLACEHOLDER_UNION_EKSTRA>
-    
-    OPTIONAL { 
-      ?site p:P571 ?inceptionStmt .
-      ?inceptionStmt psv:P571 ?inceptionNode .
-      ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                     wikibase:timePrecision ?tahunPresisi .
-    }
-    
-    BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-    BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-    
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-  }`,
-
-  'publikasi': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-  WHERE {
-    VALUES ?jenis {<PLACEHOLDER_JENIS> } 
-    {
-      <PLACEHOLDER_WILAYAH_1>
-      ?site wdt:P31 ?jenis ;
-            wdt:P291  ?p131Lokasi .
-      ?p131Lokasi wdt:P131* ?provinsi .
-    }
-    
-    <PLACEHOLDER_UNION_EKSTRA>
-    
-    OPTIONAL { 
-      ?site p:P571 ?inceptionStmt .
-      ?inceptionStmt psv:P571 ?inceptionNode .
-      ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                     wikibase:timePrecision ?tahunPresisi .
-    }
-    
-    BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-    BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-    
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-  }`,
-
-  'fiksi': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-WHERE {
-  VALUES ?jenis {<PLACEHOLDER_JENIS>} 
-{
-  <PLACEHOLDER_WILAYAH_1>
-  
-  ?site wdt:P31 ?jenis ;
-        wdt:P840  ?p131Lokasi .
-  
-  ?p131Lokasi wdt:P131* ?provinsi .
-  }
-      <PLACEHOLDER_UNION_EKSTRA>
-  OPTIONAL { 
-    ?site p:P571 ?inceptionStmt .
-    ?inceptionStmt psv:P571 ?inceptionNode .
-    ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                   wikibase:timePrecision ?tahunPresisi .
-  }
-  
-  BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-  BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-}`,
-
-'tokoh': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-WHERE {
-  VALUES ?jenis {<PLACEHOLDER_JENIS> } 
-{
-  <PLACEHOLDER_WILAYAH_1>
-  
-  ?site wdt:P31 ?jenis ;
-        wdt:P19  ?lahir .
-  
-  ?lahir wdt:P131* ?provinsi .
-  }
-      <PLACEHOLDER_UNION_EKSTRA>
-  OPTIONAL { 
-    ?site p:P571 ?inceptionStmt .
-    ?inceptionStmt psv:P571 ?inceptionNode .
-    ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                   wikibase:timePrecision ?tahunPresisi .
-  }
-  
-  BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-  BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-}`,
-'bahasa': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-WHERE {
-  VALUES ?jenis {<PLACEHOLDER_JENIS> } 
-{
-  <PLACEHOLDER_WILAYAH_1>
-  
-  ?site wdt:P31 ?jenis ;
-        wdt:P2341 ?berasaldari .
-  
-  ?berasaldari wdt:P131* ?provinsi .
-  }
-      <PLACEHOLDER_UNION_EKSTRA>
-  OPTIONAL { 
-    ?site p:P571 ?inceptionStmt .
-    ?inceptionStmt psv:P571 ?inceptionNode .
-    ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                   wikibase:timePrecision ?tahunPresisi .
-  }
-  
-  BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-  BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-}`,
-
-'kuliner': `SELECT DISTINCT ?siteQid ?siteLabel ?provinsiQid ?provinsiLabel ?p131LokasiLabel ?tahunBerdiriMentah ?tahunPresisi
-WHERE {
-  VALUES ?jenis { <PLACEHOLDER_JENIS> } 
-{
-  <PLACEHOLDER_WILAYAH_1>
-  
-  ?site wdt:P31 ?jenis ;
-        wdt:P276 ?p131Lokasi .
-  
-  ?p131Lokasi wdt:P131* ?provinsi .
-  }
-      <PLACEHOLDER_UNION_EKSTRA>
-  OPTIONAL { 
-    ?site p:P571 ?inceptionStmt .
-    ?inceptionStmt psv:P571 ?inceptionNode .
-    ?inceptionNode wikibase:timeValue ?tahunBerdiriMentah ;
-                   wikibase:timePrecision ?tahunPresisi .
-  }
-  
-  BIND(SUBSTR(STR(?site), 32) AS ?siteQid) .
-  BIND(SUBSTR(STR(?provinsi), 32) AS ?provinsiQid) .
-  
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "id". }
-}`
+  }`
 };
 
 const KUMPULAN_KUERI_1 = {
-  'general': `SELECT DISTINCT ?siteQid ?coord WHERE {
+  'universal': `SELECT DISTINCT ?siteQid ?coord WHERE {
     VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-  
-  'pers': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P159 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-
-  'publikasi': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P291 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-
-  'fiksi': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P840 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-
-  'tokoh': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P19 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-  'bahasa': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P2341 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
-    ?coordStatement ps:P625 ?coord .
-    FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
-    BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
-  }`,
-
-  'kuliner': `SELECT DISTINCT ?siteQid ?coord WHERE {
-    VALUES ?site { <PLACEHOLDER_QIDS> }
-    ?site wdt:P276 ?p131Lokasi .
-    ?p131Lokasi p:P625 ?coordStatement .
+    <PLACEHOLDER_KLAUSA_KOORDINAT>
     ?coordStatement ps:P625 ?coord .
     FILTER NOT EXISTS { ?coordStatement pq:P518 ?x }
     BIND (SUBSTR(STR(?site), 32) AS ?siteQid) .
   }`
 };
-
 
 
 const SPARQL_QUERY_3_TEMPLATE =
